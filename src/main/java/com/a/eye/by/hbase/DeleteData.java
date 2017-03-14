@@ -1,6 +1,8 @@
 package com.a.eye.by.hbase;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.TableName;
@@ -34,6 +36,17 @@ public class DeleteData {
 
         table.close();
         connection.close();
+
+        Delete delete2 = new Delete(rowKey.getBytes());
+        delete2.addColumn(columnName.getBytes(), qualifier.getBytes());
+
+        List<Delete> deletes = new ArrayList<Delete>();
+        deletes.add(delete);
+        deletes.add(delete2);
+
+        table.delete(deletes);
+
+        table.checkAndDelete(columnName.getBytes(), qualifier.getBytes(), qualifier.getBytes(), null, delete2);
 
     }
 

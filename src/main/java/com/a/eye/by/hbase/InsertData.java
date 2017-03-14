@@ -1,6 +1,8 @@
 package com.a.eye.by.hbase;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.TableName;
@@ -35,6 +37,15 @@ public class InsertData {
 
         table.close();
         connection.close();
+        
+        Put put1 = new Put(rowkey.getBytes());
+        put1.addColumn(columnName.getBytes(), qulifier.getBytes(), value.getBytes());
+        
+        List<Put> puts = new ArrayList<Put>();
+        puts.add(put);
+        puts.add(put1);
+        
+        table.put(puts);
 
     }
 
